@@ -1,0 +1,34 @@
+1) Create the object of SharedPref
+SharedPreferences sharedPreferences;
+
+2) Load the sharedPref in your Activity :
+    2 Params (1 : Name Of Pref & 2 : Mode in which you want to operate the Pref)
+sharedPreferences=getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+
+3) Save the Pref :
+    a) Create the editor on the Pref
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+    b) Add the Data you want ot save in SP.
+        editor.putString("userName",userN);
+
+    c) You need to commit your changes
+        editor.commit();
+
+4) Fetch THe Pref :
+    a) You can check if Key is available in the Pref :
+        sharedPreferences.contains("userName")
+
+    b) Fetch the Shared Prefrence :
+        text.setText(sharedPreferences.getString("userName",""));
+
+5) Other Methods :
+    get All Key & Pair
+    get Keys also
+
+Q : Can I have 2 sp in 1 app ? How can you have 2 SP in 1 app ?
+
+    Yes , we can use multiple SP in 1 app provided we give them different names.
+Q: Say I have to store 100 username ? SP Or DB
+Q: I have to store 10 username ? SP or DB : SP
+
