@@ -2,10 +2,17 @@ package com.adityadua.dbexample28m.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.adityadua.dbexample28m.model.BookData;
 import com.adityadua.dbexample28m.utils.Constants;
+
+import java.io.Console;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by AdityaDua on 23/04/18.
@@ -41,7 +48,7 @@ public class DBHelper {
        try{
            if(db_helper==null){
                db_helper=new DBHelper(context);
-
+               db_helper.open();
            }
        }catch(Exception e){
            e.printStackTrace();
@@ -134,6 +141,62 @@ public class DBHelper {
             db.endTransaction();
         }
     }
+
+
+    // We have to add functions that will read from DB.
+    // Query : select * from books;
+    // Cursors :?
+    // query : fucntion which has different definations
+    // you use when to want to select the data from the DB.
+    // select distinct(roll)
+
+    public int getFullContent(String tabName,String where){
+
+        int count =0;
+        Cursor cursor = db.query(false,tabName,null,where,null,null,null,null,null);
+
+        if(cursor !=null){
+            cursor.moveToFirst();
+            count=cursor.getCount();
+
+            Toast.makeText(context, "Count of the Records are :"+count, Toast.LENGTH_SHORT).show();
+            cursor.close();
+        }
+
+        return count;
+    }
+
+    public List<BookData> getAllBooks(){
+        List<BookData> books = new LinkedList<>();
+
+        String query = "select * from "+Constants.TABLE_NAME;
+        Log.i("Select Query is:",query);
+
+        Cursor c = db.rawQuery(query,null);
+
+        BookData book=null;
+
+        if(c.moveToFirst()){
+            do{
+                book = new BookData();
+                book.setId(c.getInt(0));
+                book.setBookid(c.getString(1));
+                book.setBookName(c.getString(2));
+                book.setAuthorName(c.getString(3));
+
+                books.add(book);
+
+            }while (c.moveToNext());
+        }
+
+        c.close();
+
+        return books;
+
+    }
+
+
+
 
 
 
